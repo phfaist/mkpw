@@ -22,7 +22,7 @@ Pretty simple:
     > mkpw -l16 -aAds
     t1zy-XxAP-KTn3-MLty
 
-    > mkpw -l16 -aAd -c'*!?' -s
+    > mkpw -l16 -aAd -f -c'*!?' -s
     Wf0E-?uDC-t6Vm-xSPQ
 
     > mkpw -l24 -a -s' '
@@ -30,4 +30,6 @@ Pretty simple:
 
 The main arguments are `-l,--length=<num-of-pw-chars>`, which char categories to
 include `-a` lowercase letters, `-A` uppercase letters, `-d` digits and `-c`
-special chars, and `-s` to split the output into a more readable form.
+special chars, and `-s` to split the output into a more readable form. Also use
+option `-f` for sites which insist that you have at least one char of each
+category.
