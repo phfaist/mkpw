@@ -44,9 +44,12 @@ Usage is pretty straightforward.
 
     > mkpw -l24 -a -s' '
     xfjw tbgq rfaw ihij bazv nvpt
+    
+    > mkpw --help
+    [...]
 
 The main arguments are `-l,--length=<num-of-pw-chars>`, which char categories to
 include `-a` lowercase letters, `-A` uppercase letters, `-d` digits and `-c`
 special chars, and `-s` to split the output into a more readable form. Also use
 option `-f` for sites which insist that you have at least one char of each
-category.
+category. Run `mkpw --help` for more information.
