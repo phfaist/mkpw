@@ -36,10 +36,10 @@ Usage is pretty straightforward.
 
 **Further options:**
 
-    > mkpw -l16 -aAds
+    > mkpw -l16 -aAd -s
     t1zy-XxAP-KTn3-MLty
 
-    > mkpw -l16 -aAd -f -c'*!?'
+    > mkpw -l16 -aAd -c'*!?' -f
     Wf0E?uDCt6VmxSPQ
 
     > mkpw -l24 -a -s' '
