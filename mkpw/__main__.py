@@ -51,6 +51,7 @@ class ParanoidPresetAction(PresetAction):
         args.chars = True
         args.digits = True
         args.split = SplitSpec(None)
+        args.entropy_file = '/dev/random'
         args.in_entropy_rate = 0.1
         args.concentrate_randomness = True
         args.force_each_category = True
@@ -88,8 +89,8 @@ Your results may vary :)
     legroup = parser.add_argument_group('password options')
     legroup.add_argument('-l', '--length', type=int, default=14,
                          help='Number of characters (14)')
-    legroup.add_argument('-e', '--entropy_file', type=str, default='/dev/random',
-                         help='Entropy file (/dev/random)')
+    legroup.add_argument('-e', '--entropy_file', type=str, default='/dev/urandom',
+                         help='Entropy file (/dev/urandom)')
     
     pgroup = parser.add_argument_group('convenient presets')
     pgroup.add_argument('-m', '--mobile', action=MobilePresetAction,
@@ -101,7 +102,7 @@ Your results may vary :)
     pgroup.add_argument('-p', '--paranoid', action=ParanoidPresetAction,
                         help="Sets some defaults so that password is paranoidly difficult "
                         "to guess, with many different characters "
-                        "(short for:  -l64 -aAdc -f -C -E0.1 -s ).")
+                        "(short for:  -l64 -aAdc -f -e'/dev/random' -C -E0.1 -s ).")
 
     cgroup = parser.add_argument_group('char options')
     cgroup.add_argument('-a', '--alpha', dest='alpha_lower', action='store_true', default=False,
