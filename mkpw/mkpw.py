@@ -213,13 +213,26 @@ class RandomStreamIntRecoder(object):
 
 class SplitSpec(object):
     DEFAULT_NUM = 4
-    DEFAULT_CHAR = '-'
+    DEFAULT_SEPSTR = '-'
 
-    def __init__(self, s=None):
+    def __init__(self, *args, **kwargs):
+        if len(args) == 0 and 'num' in kwargs and 'sepstr' in kwargs:
+            self.num = kwargs['num']
+            self.sepstr = kwargs['sepstr']
+            return
+
+        if len(args) == 0:
+            args = [ None ] # no splitting by default
+
+        if len(args) != 1 or kwargs:
+            raise ValueError("Syntax: SplitSpec(num=..., sepstr=...) or SplitSpec('4:-') or SplitSpec(None)")
+
+        s = args[0]
+
         if s is None:
             # no splitting
             self.num = 0
-            self.char = ''
+            self.sepstr = ''
             return
 
         # parse specification
@@ -228,29 +241,35 @@ class SplitSpec(object):
         if len(items) == 2:
             if len(items[0]):
                 if not re.match(r'^\d+$', items[0]):
-                    raise ValueError("Expected \"<NUMBER>:<CHAR>\", got \"%s\""%(s))
+                    raise ValueError("Expected \"<NUMBER>:<SEPARATOR-CHARS>\", got \"%s\""%(s))
                 self.num = int(items[0])
             else:
                 self.num = SplitSpec.DEFAULT_NUM
-            self.char = items[1]
+            self.sepstr = items[1]
             return
 
         if len(s) == 0:  # empty string
             # defaults
             self.num = SplitSpec.DEFAULT_NUM
-            self.char = SplitSpec.DEFAULT_CHAR
+            self.sepstr = SplitSpec.DEFAULT_SEPSTR
             return
 
-        # else, either a number or a char
+        # else, either a number or a sepstr
         if re.match(r'^\d+$', s):
             self.num = int(s)
-            self.char = SplitSpec.DEFAULT_CHAR
+            self.sepstr = SplitSpec.DEFAULT_SEPSTR
             return
 
-        # else, it's a char:
+        # else, it's a sepstr:
         self.num = SplitSpec.DEFAULT_NUM
-        self.char = s
-        
+        self.sepstr = s
+
+    def __repr__(self):
+        return "SplitSpec(num=%r,sepstr=%r)"%(self.num, self.sepstr)
+    
+    def __str__(self):
+        return repr(self)
+
 
 default_special_chars = '!@#$%^&*()_+/-=[]{};:,.<>'
 
@@ -286,7 +305,7 @@ def generate_password(args):
     rndgen = RandomStreamIntRecoder(fin)
 
     allchars = False
-    if not (args.alpha_lower or args.alpha_upper or args.digits or args.chars):
+    if not args.alpha_lower and not args.alpha_upper and not args.digits and not args.chars:
         allchars = True
 
     pwcharcategories = {}
@@ -346,7 +365,7 @@ def generate_password(args):
     # potentially split the password into groups
     spl = args.split
     if spl.num > 0:
-        pw = spl.char.join([pw[i:i+spl.num] for i in range(0, len(pw), spl.num)])
+        pw = spl.sepstr.join([pw[i:i+spl.num] for i in range(0, len(pw), spl.num)])
 
     return pw
 
