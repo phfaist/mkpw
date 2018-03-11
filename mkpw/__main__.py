@@ -68,7 +68,11 @@ def main():
 If none of -a, -A, -d, -c are specified, all categories are used. Otherwise only
 the specified character categories are used.
 
-Examples:
+Note: When using "/dev/random" as entropy file on linux, you might have to wait
+  for a moment as the system gathers entropy from physical sources. Look up the
+  difference between "/dev/random" and "/dev/urandom" for more information.
+
+Example usage:
 
 > mkpw -l24 -aAd -s  # same as mkpw -w
 t1zy-XxAP-KTn3-MLty-91Bn-vaP2
@@ -90,19 +94,20 @@ Your results may vary :)
     legroup.add_argument('-l', '--length', type=int, default=14,
                          help='Number of characters (14)')
     legroup.add_argument('-e', '--entropy_file', type=str, default='/dev/urandom',
-                         help='Entropy file (/dev/urandom)')
+                         help="Entropy file. Typical choices are /dev/random or "
+                         "/dev/urandom (the default).")
     
     pgroup = parser.add_argument_group('convenient presets')
     pgroup.add_argument('-m', '--mobile', action=MobilePresetAction,
                         help="Sets some defaults so that password is easy to enter on a "
-                        "mobile phone's keyboard (short for:  -l16 -a -s' ' )")
+                        "mobile phone's keyboard. Short for: -l16 -a -s' '")
     pgroup.add_argument('-w', '--website', action=WebsitePresetAction,
                         help="Sets some defaults so that password is pretty secure and "
-                        "suitable for a website (short for:  -l24 -aAd -s ).")
+                        "suitable for a website. Short for: -l24 -aAd -s")
     pgroup.add_argument('-p', '--paranoid', action=ParanoidPresetAction,
                         help="Sets some defaults so that password is paranoidly difficult "
-                        "to guess, with many different characters "
-                        "(short for:  -l64 -aAdc -f -e'/dev/random' -C -E0.1 -s ).")
+                        "to guess, with many different characters. "
+                        "Short for: -l64 -aAdc -f -e'/dev/random' -C -E0.1 -s")
 
     cgroup = parser.add_argument_group('char options')
     cgroup.add_argument('-a', '--alpha', dest='alpha_lower', action='store_true', default=False,
@@ -111,32 +116,39 @@ Your results may vary :)
                         help='include uppercase ascii letters')
     cgroup.add_argument('-d', '--digits', dest='digits', action='store_true', default=False,
                         help='include digits')
-    cgroup.add_argument('-c', '--chars', dest='chars', nargs='?', action='store', const=True, default=None,
-                        help='include special characters (optional: specify special char list, don\'t forget'
-                        ' to escape from shell, or leave argument empty to use default list)')
-    cgroup.add_argument('-s', '--split', dest='split', nargs='?', action='store', type=SplitSpec, const=SplitSpec(''),
-                        default=SplitSpec(None),
-                        help='split the password into groups of 4 characters separated by a hyphen.  The hyphen '
-                        'does not count towards the password length.  Possible option values are "<CHAR>" or '
-                        '"<NUMBER>" or "<NUMBER>:<CHAR>", which replaces the hyphen with CHAR and/or replaces the '
-                        'grouping length.')
+    cgroup.add_argument('-c', '--chars', dest='chars', nargs='?', action='store',
+                        const=True, default=None,
+                        help="include special characters (optional: specify special char list, "
+                        "don\'t forget to escape from shell, or leave argument empty to use "
+                        "default list)")
     cgroup.add_argument('-f', '--force-each-category', dest='force_each_category', action='store_true',
-                        default=False, help="Force at least one character from each included category. "
-                        "Note that this doesn't necessarily make your password more secure (on the contrary, "
-                        "even, it could reduce its entropy). But some websites insist on this.")
+                        default=False, help="Force at least one character from each included "
+                        "category. Note that this doesn't necessarily make your password more "
+                        "secure, but some websites insist on this.")
+    cgroup.add_argument('-s', '--split', dest='split', nargs='?', action='store',
+                        type=SplitSpec, const=SplitSpec(''), default=SplitSpec(None),
+                        help="split the password into groups of 4 characters separated by a "
+                        "hyphen.  The hyphen does not count towards the password length. "
+                        "Possible option values are \"<SEPARATOR-CHARS>\" or \"<NUMBER>\" "
+                        "or \"<NUMBER>:<SEPARATOR-CHARS>\", which sets the grouping length "
+                        "and/or the separating character string.")
     
     rgroup = parser.add_argument_group('randomness concentration options')
     rgroup.add_argument('-C', '--concentrate-randomness', dest="concentrate_randomness",
                         action='store_true', default=True)
-    rgroup.add_argument('-N', '--no-concentrate-randomness', dest="concentrate_randomness", action='store_false',
-                        help="Enable or disable the randomness concentration step (enabled by default)")
+    rgroup.add_argument('-N', '--no-concentrate-randomness', dest="concentrate_randomness",
+                        action='store_false',
+                        help="Enable or disable the randomness concentration step (enabled "
+                        "by default)")
     rgroup.add_argument('-E', '--in-entropy-rate', dest="in_entropy_rate",
                         action='store', default=0.6, type=float,
-                        help="The entropy per bit of the randomness file or device which you're willing to assume")
+                        help="The entropy per bit of the randomness file or device which you're "
+                        "willing to assume (default 0.6)")
 
     ogroup = parser.add_argument_group('other options')
     ogroup.add_argument('-v', '--verbose', action='store_true', default=False,
-                        help='Show verbose output on how the password was generated (for debugging)')
+                        help="Show verbose output on how the password was generated "
+                        "(for debugging)")
     ogroup.add_argument('--help', action='help', help="Show this help information and exit")
     ogroup.add_argument('--version', action='version', version='mkpw version %s'%(__version__))
 
