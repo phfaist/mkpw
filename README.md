@@ -17,7 +17,24 @@ You will now have `mkpw` installed.
 Run
 ---
 
-Pretty simple:
+Usage is pretty straightforward.
+
+**Preset: website**
+
+    > mkpw -w
+    5bj8-nfZ3-dkvY-dn01-pCip-XJaW
+
+**Preset: easy for mobile**
+
+    > mkpw -m
+    ocqa gquf avty wrrs
+
+**Preset: paranoid**
+
+    > mkpw -p
+    x!Mu5%yZn$3%#z6[gNw&x#_>xG.=Q-.dY[CTAn]w!<sUPCJeSkJ0(:n,3R]XVpi%
+
+**Further options:**
 
     > mkpw -l16 -aAds
     t1zy-XxAP-KTn3-MLty
