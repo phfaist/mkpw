@@ -39,8 +39,8 @@ Usage is pretty straightforward.
     > mkpw -l16 -aAds
     t1zy-XxAP-KTn3-MLty
 
-    > mkpw -l16 -aAd -f -c'*!?' -s
-    Wf0E-?uDC-t6Vm-xSPQ
+    > mkpw -l16 -aAd -f -c'*!?'
+    Wf0E?uDCt6VmxSPQ
 
     > mkpw -l24 -a -s' '
     xfjw tbgq rfaw ihij bazv nvpt
