@@ -1,15 +1,17 @@
-Minimal tool to generate random password
-========================================
+Minimal tool to generate a random password
+==========================================
 
 Install
 -------
 
 Run:
 
-    > git clone https://github.com/phfaist/mkpw.git
-    > cd mkpw
-    > python setup.py sdist
-    > pip install dist/mkpw-1.0.tar.gz
+```ShellSession
+> git clone https://github.com/phfaist/mkpw.git
+> cd mkpw
+> python setup.py sdist
+> pip install dist/mkpw-1.0.tar.gz
+```
 
 You will now have `mkpw` installed.
 
@@ -19,37 +21,54 @@ Run
 
 Usage is pretty straightforward.
 
-**Preset: website**
+**Preset: for a website**
 
-    > mkpw -w
-    5bj8-nfZ3-dkvY-dn01-pCip-XJaW
+```ShellSession
+> mkpw -w
+5bj8-nfZ3-dkvY-dn01-pCip-XJaW
+```
 
-**Preset: easy for mobile**
+**Preset: easy for mobile input**
 
-    > mkpw -m
-    ocqa gquf avty wrrs
+```ShellSession
+> mkpw -m
+ocqa gquf avty wrrs
+```
 
 **Preset: paranoid**
 
-    > mkpw -p
-    x!Mu5%yZn$3%#z6[gNw&x#_>xG.=Q-.dY[CTAn]w!<sUPCJeSkJ0(:n,3R]XVpi%
+```ShellSession
+> mkpw -p
++z<if0,BF_2&w,Bgg.K*!RW;0V.d@E,$43%LPR0-a$g#=em2b{t}<-(vDJ.@oeX_
+```
 
 **Further options:**
 
-    > mkpw -l16 -aAd -s
-    t1zy-XxAP-KTn3-MLty
+```ShellSession
+> mkpw -aAd                   # -a, -A, -d: enable char categories
+aEJlmCkZ442im9
 
-    > mkpw -l16 -aAd -c'*!?' -f
-    Wf0E?uDCt6VmxSPQ
+> mkpw -aAd -s                # -s: split into chunks
+e2VJ-nIGR-f5sk-yn
 
-    > mkpw -l24 -a -s' '
-    xfjw tbgq rfaw ihij bazv nvpt
-    
-    > mkpw --help
-    [...]
+> mkpw -l16 -aAd -s           # -l: specify length
+t1zy-XxAP-KTn3-MLty
+
+> mkpw -l24 -a -s' '          # can specify separator char for -s
+xfjw tbgq rfaw ihij bazv nvpt
+
+> mkpw -c'*?+-_'              # -c: special chars category with given chars
++_+_--++*_*-??
+
+> mkpw -l16 -aAd -c'*!?' -f   # -f: at least one char from each category
+Wf0E?uDCt6VmxSPQ
+
+> mkpw --help
+[...]
+```
 
 The main arguments are `-l,--length=<num-of-pw-chars>`, which char categories to
-include `-a` lowercase letters, `-A` uppercase letters, `-d` digits and `-c`
+include among `-a` lowercase letters, `-A` uppercase letters, `-d` digits and `-c`
 special chars, and `-s` to split the output into a more readable form. Also use
-option `-f` for sites which insist that you have at least one char of each
+option `-f` for sites which insist that you must have at least one char of each
 category. Run `mkpw --help` for more information.
